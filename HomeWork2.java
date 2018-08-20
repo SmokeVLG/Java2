@@ -5,6 +5,7 @@
  *
  * @link https://github.com/SmokeVLG/Java2/blob/master/HomeWork2.java
  */
+
 public class HomeWork2 {
 
     private static final int SIZE_OF_MAS = 4;
