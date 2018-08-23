@@ -29,7 +29,7 @@ public class HomeWork3 {
         //get 1 number
         references.get("Ivanov");
         //get 2 number
-        references.get("Denisov");
+        references.get("Petrov");
 
     }
 
