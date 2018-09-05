@@ -5,7 +5,11 @@ public class Main {
 
     public static void main(String[] args) {
         simpleMethod();
-        methodWithThread();
+        try {
+            methodWithThread();
+        } catch (InterruptedException e) {
+            System.out.println(e.getLocalizedMessage());
+        }
     }
 
     //Первый просто бежит по массиву и вычисляет значения.
@@ -23,7 +27,7 @@ public class Main {
 
     //Второй разбивает массив на два массива, в двух потоках высчитывает новые значения и
     //потом склеивает эти массивы обратно в один
-    private static void methodWithThread() {
+    private static void methodWithThread() throws InterruptedException {
         float[] arr = new float[size];
         //инициализация массива
         for (int i = 0; i < arr.length; i++) {
@@ -39,11 +43,16 @@ public class Main {
         System.arraycopy(arr, 0, a1, 0, h);
         System.arraycopy(arr, h, a2, 0, h);
         //Получаем новые значения
-        new Thread(() -> getNewValues(a1)).start();
-        new Thread(() -> getNewValues(a2)).start();
+        Thread t1 = new Thread(() -> getNewValues(a1));
+        Thread t2 = new Thread(() -> getNewValues(a2));
+        t1.start();
+        t2.start();
+        System.out.println("\nОжидание завершения потоков.");
+        t1.join();
+        t2.join();
         //Склеиваем массивы
-        System.arraycopy(a1, 0, arr, 0, h-1);
-        System.arraycopy(a2, 0, arr, h, h-1);
+        System.arraycopy(a1, 0, arr, 0, h - 1);
+        System.arraycopy(a2, 0, arr, h, h - 1);
         System.out.printf("\nВремя работы второго метода %s миллисекнды", System.currentTimeMillis() - a);
     }
 
@@ -56,3 +65,4 @@ public class Main {
     }
 
 }
+
